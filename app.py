@@ -25,10 +25,22 @@ def load_model():
 
 model = load_model()
 
-# Title and description
+# Title and description with image
 st.title("🏥 COVID-19 Risk Assessment Tool")
+
+# Add the COVID-19 prediction image
+# Place your image file in the same directory as your app.py and name it "covid_prediction.jpg"
+# If you have a different filename, update it below
+try:
+    st.image("covid_prediction.png", 
+             caption="AI-Powered COVID-19 Risk Assessment", 
+             use_column_width=True)
+except FileNotFoundError:
+    # Fallback if image not found
+    st.info("💡 Place your COVID-19 prediction image as 'covid_prediction.png' in the same directory to display it here.")
+
 st.markdown("""
-This tool helps assess COVID-19 risk based on symptoms and health conditions.
+This tool helps assess COVID-19 risk based on symptoms and health conditions using machine learning.
 **Note:** This is not a medical diagnosis. Please consult a healthcare professional for proper testing and advice.
 """)
 
@@ -60,11 +72,11 @@ with col2:
     diabetes = st.selectbox("Diabetes", ["No", "Yes"], help="Type 1 or Type 2 diabetes")
     hypertension = st.selectbox("Hypertension", ["No", "Yes"], help="High blood pressure")
 
-# Mapping function
+# Mapping functions - CRITICAL: Must match training data format
 yes_no_map = {"Yes": 1, "No": 0}
 gender_map = {"Male": 1, "Female": 0}
 
-# Convert inputs to numeric form
+# Convert inputs to numeric form - MUST match training data exactly
 input_data = {
     'age': age,
     'gender': gender_map[gender],
@@ -81,8 +93,14 @@ input_data = {
     'hypertension': yes_no_map[hypertension]
 }
 
-# Convert to DataFrame
+# Convert to DataFrame - ensure all values are numeric
 input_df = pd.DataFrame([input_data])
+
+# Debug: Print data types to verify all are numeric
+print("Debug - Input data types:")
+print(input_df.dtypes)
+print("\nDebug - Input values:")
+print(input_df.iloc[0])
 
 st.divider()
 
@@ -181,11 +199,11 @@ with st.sidebar:
     
     st.header("📞 Emergency Contacts")
     st.markdown("""
-    **Nigeria CDC Hotline:** 07030942066
+    **Nigeria CDC Hotline:** 0800 9700 0010
     
-    **SMS:** 08021283200
+    **SMS:** 08099555577
     
-    **WhatsApp:** 07030942066
+    **WhatsApp:** 07087110839
     """)
     
     st.header("🔗 Resources")
